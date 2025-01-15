@@ -1,0 +1,263 @@
+<div class="pt-28 pb-16 px-6" *ngIf="event">
+  <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Left Column: Ubah grid-rows-2 menjadi flex-col -->
+    <div class="flex flex-col gap-4">
+      <!-- Event Image -->
+      <div class="group">
+        <img
+          [src]="event.image"
+          [alt]="event.name"
+          class="rounded-2xl shadow-2xl w-full h-[300px] object-cover group-hover:scale-[1.02] transition-transform duration-300"
+        />
+      </div>
+
+      <!-- Button Section: Pindah ke atas content box -->
+      <div class="flex justify-start space-x-3">
+        <button
+          (click)="showContent('description')"
+          [ngClass]="{
+            'bg-lime-500 text-blue-900': activeContent === 'description',
+            'bg-blue-600 text-white': activeContent !== 'description'
+          }"
+          class="inline-flex items-center text-xs px-3 h-7 rounded-md hover:opacity-90 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-3.5 h-3.5 mr-1.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+            />
+          </svg>
+          Deskripsi
+        </button>
+        <button
+          (click)="showContent('ticket')"
+          [ngClass]="{
+            'bg-lime-500 text-blue-900': activeContent === 'ticket',
+            'bg-blue-600 text-white': activeContent !== 'ticket'
+          }"
+          class="inline-flex items-center text-xs px-3 h-7 rounded-md hover:opacity-90 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-3.5 h-3.5 mr-1.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
+            />
+          </svg>
+          Pilih Tiket
+        </button>
+      </div>
+
+      <!-- Content Box: Sekarang sejajar dengan detail event -->
+      <div
+        class="bg-gray-800/30 backdrop-blur-md rounded-2xl p-5 shadow-xl hover:shadow-2xl transition-all duration-200 flex-1"
+      >
+        <!-- Content sections tetap sama -->
+        <div *ngIf="activeContent === 'description'" class="h-full">
+          <h3 class="text-2xl font-bold text-lime-400 mb-3">Deskripsi</h3>
+          <p class="text-gray-300 leading-relaxed">{{ event.description }}</p>
+        </div>
+
+        <div *ngIf="activeContent === 'ticket'" class="h-full">
+          <h3 class="text-2xl font-bold text-lime-400 mb-3">Pilihan Tiket</h3>
+          <div class="space-y-3">
+            <!-- Regular Ticket -->
+            <div
+              class="p-4 bg-gray-700/50 rounded-xl hover:bg-gray-700/70 transition-all"
+            >
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="font-bold text-lime-400">Regular Ticket</h4>
+                  <p class="text-sm text-gray-300">
+                    Rp {{ formatPrice(event.price.regular) }}
+                  </p>
+                  <p class="text-xs text-gray-400 mt-1">
+                    Akses ke area festival, merchandise exclusive
+                  </p>
+                </div>
+                <div class="flex items-center gap-3">
+                  <button
+                    (click)="updateQuantity('regular', -1)"
+                    class="w-7 h-7 rounded-md bg-gray-600 text-white hover:bg-gray-500 flex items-center justify-center"
+                  >
+                    -
+                  </button>
+                  <span class="text-white min-w-[20px] text-center">{{
+                    tickets.regular
+                  }}</span>
+                  <button
+                    (click)="updateQuantity('regular', 1)"
+                    class="w-7 h-7 rounded-md bg-gray-600 text-white hover:bg-gray-500 flex items-center justify-center"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- VIP Ticket -->
+            <div
+              class="p-4 bg-gray-700/50 rounded-xl hover:bg-gray-700/70 transition-all"
+            >
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="font-bold text-lime-400">VIP Ticket</h4>
+                  <p class="text-sm text-gray-300">
+                    Rp {{ formatPrice(event.price.vip) }}
+                  </p>
+                  <p class="text-xs text-gray-400 mt-1">
+                    Akses ke area VIP, meet & greet, merchandise special edition
+                  </p>
+                </div>
+                <div class="flex items-center gap-3">
+                  <button
+                    (click)="updateQuantity('vip', -1)"
+                    class="w-7 h-7 rounded-md bg-gray-600 text-white hover:bg-gray-500 flex items-center justify-center"
+                  >
+                    -
+                  </button>
+                  <span class="text-white min-w-[20px] text-center">{{
+                    tickets.vip
+                  }}</span>
+                  <button
+                    (click)="updateQuantity('vip', 1)"
+                    class="w-7 h-7 rounded-md bg-gray-600 text-white hover:bg-gray-500 flex items-center justify-center"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="space-y-8 lg:pl-8">
+      <!-- Event Details Section -->
+      <div
+        class="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300"
+      >
+        <div class="flex items-center mb-2">
+          <div
+            class="w-12 h-12 rounded-full overflow-hidden border-4 border-lime-500 mr-4 hover:border-lime-400 transition-colors"
+          >
+            <img
+              [src]="event.image"
+              [alt]="event.name"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-lime-400 mb-1 font-lexend">
+              {{ event.name }}
+            </h2>
+            <p class="text-gray-300 text-sm">{{ event.location }}</p>
+          </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-lime-400 mb-4">Detail Event</h3>
+        <div class="space-y-4">
+          <div
+            class="flex items-center p-3 bg-gray-900/50 rounded-xl hover:bg-gray-900/70 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="h-5 w-5 text-lime-400 mr-4"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <p class="text-sm">
+              {{ event.date.day }} {{ event.date.month }} {{ event.date.year }}
+            </p>
+          </div>
+          <div
+            class="flex items-center p-3 bg-gray-900/50 rounded-xl hover:bg-gray-900/70 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="h-5 w-5 text-lime-400 mr-4"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <p class="text-sm">{{ event.time }}</p>
+          </div>
+          <div
+            class="flex items-center p-3 bg-gray-900/50 rounded-xl hover:bg-gray-900/70 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="h-5 w-5 text-lime-400 mr-4"
+            >
+              <path
+                fill-rule="evenodd"
+                d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <p class="text-sm">{{ event.venue }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Section -->
+      <div
+        class="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300"
+      >
+        <h3 class="text-xl font-bold mb-4 font-spartan">Total Harga</h3>
+        <div class="space-y-2 mb-4">
+          <p *ngIf="tickets.regular > 0" class="text-sm text-gray-300">
+            Regular:
+            <span
+              >Rp {{ formatPrice(event.price.regular * tickets.regular) }}</span
+            >
+          </p>
+          <p *ngIf="tickets.vip > 0" class="text-sm text-gray-300">
+            VIP:
+            <span>Rp {{ formatPrice(event.price.vip * tickets.vip) }}</span>
+          </p>
+        </div>
+        <p class="text-lg text-lime-400 font-bold mb-6">
+          Rp {{ formatPrice(calculateTotal()) }}
+        </p>
+        <button
+          [disabled]="calculateTotal() === 0"
+          (click)="orderTickets()"
+          class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-lg rounded-full disabled:opacity-50 disabled:cursor-not-allowed font-lexend"
+        >
+          Pesan Sekarang
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,92 @@
+Carousel
+<div class="relative mt-24 max-w-screen-lg mx-auto">
+  <!-- Tambahkan margin-top untuk menghindari navbar -->
+  <div class="w-full overflow-hidden rounded-lg">
+    <img
+      src="https://imgsrv2.voi.id/q3Lkw6hDOT0fGJsBb1lQj1gtvf2_wUBxzABUBHTwmQ0/auto/1200/675/sm/1/bG9jYWw6Ly8vcHVibGlzaGVycy8zMDk1NTgvMjAyMzA5MTExNDU3LW1haW4uY3JvcHBlZF8xNjk0NDE5MDQxLmpwZWc.jpg"
+      alt="Concert"
+      class="w-full h-80 object-cover"
+    />
+    <!-- Lebar penuh, tinggi 320px -->
+  </div>
+  <div class="absolute inset-0 flex justify-between items-center px-4">
+    <button
+      class="bg-blue-900 text-white p-2 rounded-full hover:bg-blue-700 transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+    </button>
+    <button
+      class="bg-blue-900 text-white p-2 rounded-full hover:bg-blue-700 transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Events Section -->
+<section class="mt-8 max-w-screen-lg mx-auto">
+  <h2 class="text-left text-2xl font-bold mb-6 font-lexend">
+    Konser atau Event Terdekat
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Event Cards -->
+    <div
+      *ngFor="let event of events"
+      (click)="navigateToDetail(event.id)"
+      class="bg-white text-blue-900 rounded-lg shadow-md overflow-hidden relative border border-red-500 mx-4 cursor-pointer hover:shadow-xl transition-all"
+    >
+      <div class="relative">
+        <img
+          [src]="event.image"
+          [alt]="event.name"
+          class="w-full h-[200px] object-cover"
+        />
+        <div
+          class="absolute top-2 left-2 bg-gray-100 text-center rounded-lg px-3 py-1"
+        >
+          <p class="text-lg font-bold text-black leading-none">
+            {{ event.date.day }}
+          </p>
+          <p class="text-xs text-red-600">
+            {{ event.date.month }} {{ event.date.year }}
+          </p>
+        </div>
+      </div>
+      <div class="p-4 flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-bold">{{ event.name }}</h3>
+          <p class="text-sm">{{ event.location }}</p>
+        </div>
+        <p class="text-lg font-bold text-right">
+          Rp {{ formatPrice(event.price) }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
